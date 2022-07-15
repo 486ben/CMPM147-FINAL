@@ -6,7 +6,7 @@ let angle = 180 / symmetry;
 let clearButtton;
 let xoff = 0;
 
-//new
+
 //setup functionn
 function setup()
 {
