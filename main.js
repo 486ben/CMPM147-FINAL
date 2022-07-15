@@ -1,16 +1,31 @@
+//https://editor.p5js.org/aashnasoni/sketches/HEtvchjBJ
 var points = [];
 var mult = 0.005;
+let symmetry = 10;
+let angle = 180 / symmetry;
+let clearButtton;
+let xoff = 0;
+
 
 //setup function
-function setup(){
-  createCanvas(windowWidth, windowHeight);
+function setup()
+{
+  createCanvas(1800, 800);
   background(50);
   angleMode(DEGREES);
   noiseDetail(1);
+  
+  colorPicker = createColorPicker('#ed225d');
+  colorPicker.position(1800, 800);
+  clearButton = createButton('clear');
+  
+  clearButton.mousePressed(clearCanvas);
+  slider = createSlider(0.3, 32, 0, 0.1);
 
+  /*
   //background 
   //if we change the size of number, the shape will change
-  var density = 50;
+  var density = 60;
   var space = width/density;
   for(var x = 0; x < width; x += space){
     for(var y = 0; y < innerHeight; y += space){
@@ -19,34 +34,14 @@ function setup(){
       points.push(p);
     }
   }
+  */
 }
 
-// function draw(){
-//   noStroke();
-//   for(var x1 = 0; x1 < points.length; x1++){
-//     //color part
-//     //red
-//     var color1 = map(points[x1].x, 0 , width, 50, 255);
-//     //green
-//     var color2 = map(points[x1].y, 0 , height, 50, 255);
-//     //blue
-//     var color3 = map(points[x1].x, 0 , width, 255, 50);
-//     //yellow
-//     var color4 = map(points[x1].y, 0 , height, 255, 255);
-//     //purple
-//     var color5 = map(points[x1].x, 0 , width, 255, 50);
-    
-//     //fill(color1, color2, color3);
-//     fill(color1, color2, color3, color4, color5);
+function clearCanvas()
+{
+  background(50);
+}
 
-//     var angle = map(noise(points[x1].x * mult, points[x1].y * mult), 0, 1, 0, 720);
-    
-//     //random points add on vector
-//     points[x1].add(createVector(cos(angle), sin(angle)));
-//     //ellipse function
-//     ellipse(points[x1].x, points[x1].y,1);
-//   }
-// }
 
 class Planet {
   constructor(name,color,dimension,distance,angle,speed){
@@ -72,17 +67,10 @@ class Planet {
   const pluto = new Planet('Pluto','gold',15,220,1,1.05);
   let rotationMoon = 0;
 
-function draw(){
-  draw1();
-  draw2();
-}
-
-function draw1(){
-  bg();
-}
-function draw2(){
+function draw()
+{
   //background(50);
-  translate(width/2,height/2);
+  translate(width / 2, height / 2);
   center_sun();
   planet1();
   planet2();
@@ -94,8 +82,41 @@ function draw2(){
   planet8();
   planet9();
   planet10();
-}
 
+  if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) 
+  {
+
+    let mx = mouseX - width / 2;
+    let my = mouseY - height / 2;
+    let pmx = pmouseX - width / 2;
+    let pmy = pmouseY - height / 2;
+    
+    if (mouseIsPressed) 
+    {
+      let hu = map(sin(xoff), -1,1,0,255);
+      xoff += 1;
+      stroke(colorPicker.color());
+      let angle = 360 / symmetry;
+      for (let i = 0; i < symmetry; i++) 
+      {
+        rotate(angle);
+        //let d = dist(mx, my, pmx, pmy);
+        //let sw = map(d, 0, 16, 16, 2);
+        let sw = slider.value();
+        strokeWeight(sw);
+        line(mx, my, pmx, pmy);
+        push();
+        scale(1, -1);
+        line(mx, my, pmx, pmy);
+        pop();
+      }
+    }
+  }
+
+  
+
+}
+/*
 function bg(){
   noStroke();
   for(var x1 = 0; x1 < points.length; x1++){
@@ -122,7 +143,7 @@ function bg(){
     ellipse(points[x1].x, points[x1].y,1);
   }
 }
-
+*/
 //the center of the plants
 function center_sun(){
   noStroke();
@@ -130,13 +151,14 @@ function center_sun(){
   circle(sun.distance,sun.distance,sun.dimension);  
 }
 
+
 function planet1(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,mercury.distance + (mercury.dimension * 2) + 6);
+  //circle(0,0,mercury.distance + (mercury.dimension * 2) + 6);
   //Draw this.Planet
   rotate(mercury.angle);
   noStroke();
@@ -152,7 +174,7 @@ function planet2(){
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,venus.distance + (venus.dimension * 2) + 10);
+  //circle(0,0,venus.distance + (venus.dimension * 2) + 10);
     //Draw this.Planet
   rotate(venus.angle);
   noStroke();
@@ -168,7 +190,7 @@ function planet3(){
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,earth.distance + (earth.dimension * 2) + 20);
+  //circle(0,0,earth.distance + (earth.dimension * 2) + 20);
   //Draw this.Planet
   rotate(earth.angle);
   noStroke();
@@ -178,7 +200,7 @@ function planet3(){
   fill('white');
   translate(earth.distance,earth.distance)
   rotate(rotationMoon);
-  circle(10,10,2);
+  //circle(10,10,2);
   pop();   
   earth.angle += earth.speed; 
   rotationMoon += 1;
@@ -190,7 +212,7 @@ function planet4(){
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,mars.distance + (mars.dimension * 2) + 28);
+  //circle(0,0,mars.distance + (mars.dimension * 2) + 28);
   //Draw this.Planet
   rotate(mars.angle);
   noStroke();
@@ -207,7 +229,7 @@ function planet5(){
   stroke(asteroidsOrbit.color);
   noFill();
   rotate(20);
-  ellipse(0,0,asteroidsOrbit.distance * 2.3,asteroidsOrbit.distance * 2)
+  //ellipse(0,0,asteroidsOrbit.distance * 2.3,asteroidsOrbit.distance * 2)
   //Draw this.Planet
   pop();    
 }
@@ -218,7 +240,7 @@ function planet6(){
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,jupiter.distance + (jupiter.dimension * 2) + 35);
+  //circle(0,0,jupiter.distance + (jupiter.dimension * 2) + 35);
   //Draw this.Planet
   rotate(jupiter.angle);
   noStroke();
@@ -235,12 +257,12 @@ function planet7(){
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,saturn.distance + (saturn.dimension * 2) + 55);
+  //circle(0,0,saturn.distance + (saturn.dimension * 2) + 55);
   //Draw this.Planet
   rotate(saturn.angle);
   noStroke();
   fill(saturn.color);
-  circle(saturn.distance,saturn.distance,saturn.dimension);
+  //circle(saturn.distance,saturn.distance,saturn.dimension);
   //Draw Saturn Ring
   noFill();
   stroke('grey');
@@ -255,7 +277,7 @@ function planet8(){
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,uranus.distance + (uranus.dimension * 2) + 60);
+  //circle(0,0,uranus.distance + (uranus.dimension * 2) + 60);
   //Draw this.Planet
   rotate(uranus.angle);
   noStroke();
@@ -271,7 +293,7 @@ function planet9(){
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,neptune.distance + (neptune.dimension * 2) + 72);
+  //circle(0,0,neptune.distance + (neptune.dimension * 2) + 72);
   //Draw this.Planet
   rotate(neptune.angle);
   noStroke();
@@ -286,7 +308,7 @@ function planet10(){
   strokeWeight(1);
   stroke('grey');
   noFill();
-  circle(0,0,pluto.distance + (pluto.dimension * 2) + 85);
+  //circle(0,0,pluto.distance + (pluto.dimension * 2) + 85);
   //Draw this.Planet
   rotate(pluto.angle);
   noStroke();
