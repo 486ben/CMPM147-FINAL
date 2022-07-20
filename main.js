@@ -1,319 +1,298 @@
-//https://editor.p5js.org/aashnasoni/sketches/HEtvchjBJ
-var points = [];
-var mult = 0.005;
-let symmetry = 10;
-let angle = 180 / symmetry;
-let clearButtton;
-let xoff = 0;
+// idea from https://gist.github.com/bifo90/da5a437500f967162eb5e78df8d63859
 
-//new
-//setup functionn
-function setup()
-{
-  createCanvas(1800, 800);
+// var points = [];
+// var mult = 0.005;
+var Planet0 = [];
+var Planet1 = [];
+
+//setup function
+function setup(){
+  createCanvas(windowWidth, windowHeight);
   background(50);
   angleMode(DEGREES);
   noiseDetail(1);
-  
-  colorPicker = createColorPicker('#ed225d');
-  colorPicker.position(1800, 800);
-  clearButtton = createButton('clear');
-  
-  clearButton.mousePressed(clearCanvas);
-  slider = createSlider(0.3, 32, 0, 0.1);
 
-  /*
   //background 
   //if we change the size of number, the shape will change
-  var density = 60;
-  var space = width/density;
-  for(var x = 0; x < width; x += space){
-    for(var y = 0; y < innerHeight; y += space){
-      //x and y had been add randomness for the start point
-      var p = createVector(x + random(-10,10), y + random(-10, 10));
-      points.push(p);
-    }
-  }
-  */
-}
+  // var density = 50;
+  // var space = width/density;
+  // for(var x = 0; x < width; x += space){
+  //   for(var y = 0; y < innerHeight; y += space){
+  //     //x and y had been add randomness for the start point
+  //     var p = createVector(x + random(-10,10), y + random(-10, 10));
+  //     points.push(p);
+  //   }
+  // }
+ }
 
-function clearCanvas()
-{
-  background(50);
-}
-
-
-class Planet {
+ class Planet {
   constructor(name,color,dimension,distance,angle,speed){
   this.name = name;
-  this.color = color;
-  this.dimension = dimension;
-  this.distance = distance;
-  this.angle = angle;
-  this.speed = speed;
+    this.color = color;
+    this.dimension = dimension;
+    this.distance = distance;
+    this.angle = angle;
+    this.speed = speed;
   }
 }
 
-  const sun = new Planet('Sun','rgb(255,100,50)',50,0,0,0);
-  const mercury = new Planet('Mercury','orange',15,60,1,2);
-  const venus = new Planet('Venus','#937D64',25,70,1,1.5);
-  const earth = new Planet('Earth','dodgerblue',20,95,1,1.75);
-  const mars = new Planet('Mars','red',10,80,1,1.60);
-  const asteroidsOrbit = new Planet('Asteroids Orbit','grey',5,140,0,0);
-  const jupiter = new Planet('Jupiter','pink',38,125,1,1.30);
-  const saturn = new Planet('Saturn','darkorange',27,160,1,1.25);
-  const uranus = new Planet('Uranus','lightgreen',24,180,1,1.15);
-  const neptune = new Planet('Neptune','cyan',15,200,1,1.1);
-  const pluto = new Planet('Pluto','gold',15,220,1,1.05);
-  let rotationMoon = 0;
+const pl_1 = new Planet('planet1','rgb(255,100,50)',55,0,0,5);
+const pl_2 = new Planet('planet2','orange',20,60,1,1);
+const pl_3 = new Planet('planet3','#937D64',15,80,1,1.15);
+const pl_4 = new Planet('planet4','dodgerblue',15,105,1,1.5);
+const pl_5 = new Planet('planet5','red',14,120,1,1.3);
+const pl_6 = new Planet('planet6 Orbit','grey',15,170,0,1);
+const pl_7 = new Planet('planet7','pink',18,155,1,1.30);
+const pl_8 = new Planet('planet8','darkorange',17,190,1,1.25);
+const pl_9 = new Planet('planet9','lightgreen',17,210,1,1.15);
+const pl_10 = new Planet('planet10','cyan',15,230,1,1.1);
+const pl_11 = new Planet('planet11','gold',13,250,1,1.05);
+let the_moon = 0;
 
-function draw()
-{
-  //background(50);
-  translate(width / 2, height / 2);
+function draw(){
+  background(50);
+  star();
+
+  translate(width/2,height/2);
+
   center_sun();
-  planet1();
-  planet2();
-  planet3();
-  planet4();
-  planet5();
-  planet6();
-  planet7();
-  planet8();
-  planet9();
-  planet10();
+  yellow_planet();
+  gray_planet();
+  blue_planet();
+  red_planet();
+  grey_circle();
+  pink_ball();
+  orange_ball();
+  lightgreen_ball();
+  lightblue_ball();
+  lightyellow_ball();
+}
 
-  if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) 
-  {
-
-    let mx = mouseX - width / 2;
-    let my = mouseY - height / 2;
-    let pmx = pmouseX - width / 2;
-    let pmy = pmouseY - height / 2;
+//No using anymore
+// function bg(){
+//   noStroke();
+//   for(var x1 = 0; x1 < points.length; x1++){
+//     //color part
+//     //red
+//     var color1 = map(points[x1].x, 0 , width, 50, 255);
+//     //green
+//     var color2 = map(points[x1].y, 0 , height, 50, 255);
+//     //blue
+//     var color3 = map(points[x1].x, 0 , width, 255, 50);
+//     //yellow
+//     var color4 = map(points[x1].y, 0 , height, 255, 255);
+//     //purple
+//     var color5 = map(points[x1].x, 0 , width, 255, 50);
     
-    if (mouseIsPressed) 
-    {
-      let hu = map(sin(xoff), -1,1,0,255);
-      xoff += 1;
-      stroke(colorPicker.color());
-      let angle = 360 / symmetry;
-      for (let i = 0; i < symmetry; i++) 
-      {
-        rotate(angle);
-        //let d = dist(mx, my, pmx, pmy);
-        //let sw = map(d, 0, 16, 16, 2);
-        let sw = slider.value();
-        strokeWeight(sw);
-        line(mx, my, pmx, pmy);
-        push();
-        scale(1, -1);
-        line(mx, my, pmx, pmy);
-        pop();
-      }
+//     //fill(color1, color2, color3);
+//     fill(color1, color2, color3, color4, color5);
+
+//     var angle = map(noise(points[x1].x * mult, points[x1].y * mult), 0, 1, 0, 720);
+    
+//     //random points add on vector
+//     points[x1].add(createVector(cos(angle), sin(angle)));
+//     //ellipse function
+//     ellipse(points[x1].x, points[x1].y,1);
+//   }
+// }
+
+function star(){
+
+  for(var i = 0; i < 2; i++){
+    p1 = new planet0();
+    Planet1.push(p1);
+  }
+
+  for (var i = 0; i < Planet1.length; i++){
+    Planet1[i].update();
+    Planet1[i].show();
+  }
+
+  for(var i = 0; i < 10; i++){
+    p = new planet();
+    Planet0.push(p);
+  }
+
+  for(var i = 0; i < Planet0.length; i++){
+    //second function
+    if(Planet0[i].alpha > 0){
+      Planet0[i].update();
+      Planet0[i].show();
+    } else {
+      Planet0.splice(i, 1);
     }
   }
 
-  
-
+  console.log(Planet0.length);
 }
-/*
-function bg(){
-  noStroke();
-  for(var x1 = 0; x1 < points.length; x1++){
-    //color part
-    //red
-    var color1 = map(points[x1].x, 0 , width, 50, 255);
-    //green
-    var color2 = map(points[x1].y, 0 , height, 50, 255);
-    //blue
-    var color3 = map(points[x1].x, 0 , width, 255, 50);
-    //yellow
-    var color4 = map(points[x1].y, 0 , height, 255, 255);
-    //purple
-    var color5 = map(points[x1].x, 0 , width, 255, 50);
-    
-    //fill(color1, color2, color3);
-    fill(color1, color2, color3, color4, color5);
 
-    var angle = map(noise(points[x1].x * mult, points[x1].y * mult), 0, 1, 0, 720);
-    
-    //random points add on vector
-    points[x1].add(createVector(cos(angle), sin(angle)));
-    //ellipse function
-    ellipse(points[x1].x, points[x1].y,1);
-  }
-}
-*/
-//the center of the plants
 function center_sun(){
   noStroke();
-  fill(sun.color);
-  circle(sun.distance,sun.distance,sun.dimension);  
+  fill(pl_1.color);
+  circle(pl_1.distance, pl_1.distance, pl_1.dimension);  
 }
 
-
-function planet1(){
+function yellow_planet(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,mercury.distance + (mercury.dimension * 2) + 6);
+  circle(0,0,pl_2.distance + (pl_2.dimension * 2) + 6);
   //Draw this.Planet
-  rotate(mercury.angle);
+  rotate(pl_2.angle);
   noStroke();
-  fill(mercury.color);
-  circle(mercury.distance,mercury.distance,mercury.dimension);
+  fill(pl_2.color);
+  circle(pl_2.distance, pl_2.distance, pl_2.dimension);
   pop(); 
-  mercury.angle += mercury.speed;
+  pl_2.angle += pl_2.speed;
 }
 
-function planet2(){
+function gray_planet(){
   push();
     //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,venus.distance + (venus.dimension * 2) + 10);
+  circle(0,0,pl_3.distance + (pl_3.dimension * 3) + 17);
     //Draw this.Planet
-  rotate(venus.angle);
+  rotate(pl_3.angle);
   noStroke();
-  fill(venus.color);
-  circle(venus.distance,venus.distance,venus.dimension);
+  fill(pl_3.color);
+  circle(pl_3.distance, pl_3.distance, pl_3.dimension);
   pop(); 
-  venus.angle += venus.speed;
+  pl_3.angle += pl_3.speed;
 }
 
-function planet3(){
+function blue_planet(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,earth.distance + (earth.dimension * 2) + 20);
+  circle(0,0,pl_4.distance + (pl_4.dimension * 2) + 20);
   //Draw this.Planet
-  rotate(earth.angle);
+  rotate(pl_4.angle);
   noStroke();
-  fill(earth.color);
-  circle(earth.distance,earth.distance,earth.dimension);
+  fill(pl_4.color);
+  circle(pl_4.distance,pl_4.distance,pl_4.dimension);
   //Moon
   fill('white');
-  translate(earth.distance,earth.distance)
-  rotate(rotationMoon);
-  //circle(10,10,2);
+  translate(pl_4.distance,pl_4.distance)
+  rotate(the_moon);
+  circle(10,10,2);
   pop();   
-  earth.angle += earth.speed; 
-  rotationMoon += 1;
+  pl_4.angle += pl_4.speed; 
+  the_moon += 1;
 }
 
-function planet4(){
+function red_planet(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,mars.distance + (mars.dimension * 2) + 28);
+  circle(0,0,pl_5.distance + (pl_5.dimension * 2) + 28);
   //Draw this.Planet
-  rotate(mars.angle);
+  rotate(pl_5.angle);
   noStroke();
-  fill(mars.color);
-  circle(mars.distance,mars.distance,mars.dimension);
+  fill(pl_5.color);
+  circle(pl_5.distance,pl_5.distance,pl_5.dimension);
   pop();   
-  mars.angle += mars.speed;  
+  pl_5.angle += pl_5.speed;  
 }
 
-function planet5(){
+function grey_circle(){
   push();
   //Draw this.Planet orbit
   strokeWeight(6);
-  stroke(asteroidsOrbit.color);
+  stroke(pl_6.color);
   noFill();
   rotate(20);
-  //ellipse(0,0,asteroidsOrbit.distance * 2.3,asteroidsOrbit.distance * 2)
-  //Draw this.Planet
+  ellipse(0,0,pl_6.distance * 2.3, pl_6.distance * 2)
   pop();    
 }
 
-function planet6(){
+function pink_ball(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,jupiter.distance + (jupiter.dimension * 2) + 35);
+  circle(0,0,pl_7.distance + (pl_7.dimension * 2) + 35);
   //Draw this.Planet
-  rotate(jupiter.angle);
+  rotate(pl_7.angle);
   noStroke();
-  fill(jupiter.color);
-  circle(jupiter.distance,jupiter.distance,jupiter.dimension);
+  fill(pl_7.color);
+  circle(pl_7.distance,pl_7.distance,pl_7.dimension);
   pop();   
-  jupiter.angle += jupiter.speed;  
+  pl_7.angle += pl_7.speed;  
 }
 
-
-function planet7(){
+function orange_ball(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,saturn.distance + (saturn.dimension * 2) + 55);
-  //Draw this.Planet
-  rotate(saturn.angle);
+  circle(0,0,pl_8.distance + (pl_8.dimension * 2) + 55);
+  //Draw this.pl_8
+  rotate(pl_8.angle);
   noStroke();
-  fill(saturn.color);
-  //circle(saturn.distance,saturn.distance,saturn.dimension);
-  //Draw Saturn Ring
+  fill(pl_8.color);
+  circle(pl_8.distance,pl_8.distance,pl_8.dimension);
+  //Draw pl_8 Ring
   noFill();
   stroke('grey');
-  ellipse(saturn.distance,saturn.distance,45,20);
+  ellipse(pl_8.distance,pl_8.distance,45,20);
   pop();   
-  saturn.angle += saturn.speed;  
+  pl_8.angle += pl_8.speed;  
 }
 
-function planet8(){
+function lightblue_ball(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,uranus.distance + (uranus.dimension * 2) + 60);
+  circle(0,0,pl_9.distance + (pl_9.dimension * 2) + 60);
   //Draw this.Planet
-  rotate(uranus.angle);
+  rotate(pl_9.angle);
   noStroke();
-  fill(uranus.color);
-  circle(uranus.distance,uranus.distance,uranus.dimension);
+  fill(pl_9.color);
+  circle(pl_9.distance, pl_9.distance, pl_9.dimension);
   pop(); 
-  uranus.angle += uranus.speed;
+  pl_9.angle += pl_9.speed;
 }
 
-function planet9(){
+function lightgreen_ball(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,neptune.distance + (neptune.dimension * 2) + 72);
+  circle(0,0,pl_10.distance + (pl_10.dimension * 2) + 72);
   //Draw this.Planet
-  rotate(neptune.angle);
+  rotate(pl_10.angle);
   noStroke();
-  fill(neptune.color);
-  circle(neptune.distance,neptune.distance,neptune.dimension);
+  fill(pl_10.color);
+  circle(pl_10.distance, pl_10.distance, pl_10.dimension);
   pop(); 
-  neptune.angle += neptune.speed;
+  pl_10.angle += pl_10.speed;
 }
-function planet10(){
+
+function lightyellow_ball(){
   push();
   //Draw this.Planet orbit
   strokeWeight(1);
   stroke('grey');
   noFill();
-  //circle(0,0,pluto.distance + (pluto.dimension * 2) + 85);
+  circle(0,0,pl_11.distance + (pl_11.dimension * 2) + 85);
   //Draw this.Planet
-  rotate(pluto.angle);
+  rotate(pl_11.angle);
   noStroke();
-  fill(pluto.color);
-  circle(pluto.distance,pluto.distance,pluto.dimension);
+  fill(pl_11.color);
+  circle(pl_11.distance,pl_11.distance,pl_11.dimension);
   pop(); 
-  pluto.angle += pluto.speed;
+  pl_11.angle += pl_11.speed;
 }
