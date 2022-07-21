@@ -28,12 +28,12 @@ class planet {
         this.b = map(dist(width/2, height/2,
         this.pos.x, this.pos.y), 0, width/2, 0, 255);
 
-        this.alpha = 300;
+        this.alpha = 30;
     }
 
     update(){
 
-        var m = map(sin(frameCount * 6), -1, 1, 0.4, 0.6);
+        var m = map(sin(frameCount * 1), -1, 1, 0.4, 0.6);
         this.acc.mult(m);
 
         this.vel.add(this.acc);
@@ -45,7 +45,7 @@ class planet {
         this.pos.x, this.pos.y), 0, width/2, 0, 255);
 
         if(dist(width/2, height/2, this.pos.x, this.pos.y) > 80){
-            this.alpha -= 200;
+            this.alpha -= 20;
         }
     }
 
