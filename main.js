@@ -1,18 +1,19 @@
 // idea from https://gist.github.com/bifo90/da5a437500f967162eb5e78df8d63859
-
-// var points = [];
-// var mult = 0.005;
 var Planet0 = [];
 var Planet1 = [];
+
+let song;
 
 //setup function
 function setup(){
   createCanvas(windowWidth, windowHeight);
+  song = loadSound('assets/background.mp3');
   background(50);
   angleMode(DEGREES);
   noiseDetail(1);
-
   noCursor();
+
+  //backgroundMusic();
   //background 
   //if we change the size of number, the shape will change
   // var density = 50;
@@ -24,7 +25,21 @@ function setup(){
   //     points.push(p);
   //   }
   // }
+  
  }
+
+ function mousePressed() {
+  if (song.isPlaying()) {
+    // .isPlaying() returns a boolean
+    song.stop();
+    background(255, 0, 0);
+  } else {
+    song.play();
+    background(0, 255, 0);
+    song.loop();
+  }
+}
+
 
  class Planet {
   constructor(name,color,dimension,distance,angle,speed){
@@ -52,7 +67,6 @@ let the_moon = 0;
 
 function draw(){
   background(0,0,35,25); 
-  star();
 
   var galaxy = { 
     locationX : random(width),
@@ -61,6 +75,8 @@ function draw(){
   }
   ellipse(mouseX ,mouseY, galaxy.size, galaxy.size);
   ellipse(galaxy.locationX ,galaxy.locationY, galaxy.size, galaxy.size);
+
+  star();
 
   translate(width/2,height/2);
 
