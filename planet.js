@@ -2,7 +2,7 @@ class planet0 {
     constructor(){
         this.pos = createVector(random(width),random(height));
         this.vel = createVector(0, 0);
-        this.acc = createVector(0.1, 0);
+        this.acc = createVector(0.1, 0.1);
     }
 
     update(){
@@ -11,8 +11,8 @@ class planet0 {
     }
 
     show(){
-        fill(600, 500, 200, 300);
-        ellipse(this.pos.x, this.pos.y, 10);
+        fill(300, 200, 300, 100);
+        ellipse(this.pos.x, this.pos.y, 4);
     }
 }
 
@@ -28,12 +28,12 @@ class planet {
         this.b = map(dist(width/2, height/2,
         this.pos.x, this.pos.y), 0, width/2, 0, 255);
 
-        this.alpha = 600;
+        this.alpha = 300;
     }
 
     update(){
 
-        var m = map(sin(frameCount * 48), -1, 1, 0.4, 0.6);
+        var m = map(sin(frameCount * 6), -1, 1, 0.4, 0.6);
         this.acc.mult(m);
 
         this.vel.add(this.acc);
@@ -45,7 +45,7 @@ class planet {
         this.pos.x, this.pos.y), 0, width/2, 0, 255);
 
         if(dist(width/2, height/2, this.pos.x, this.pos.y) > 80){
-            this.alpha -= 50;
+            this.alpha -= 200;
         }
     }
 
