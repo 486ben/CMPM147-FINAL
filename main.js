@@ -12,6 +12,7 @@ function setup(){
   angleMode(DEGREES);
   noiseDetail(1);
 
+  noCursor();
   //background 
   //if we change the size of number, the shape will change
   // var density = 50;
@@ -50,8 +51,16 @@ const pl_11 = new Planet('planet11','gold',13,250,1,1.05);
 let the_moon = 0;
 
 function draw(){
-  background(50);
+  background(0,0,35,25); 
   star();
+
+  var galaxy = { 
+    locationX : random(width),
+    locationY : random(height),
+    size : random(2,8)
+  }
+  ellipse(mouseX ,mouseY, galaxy.size, galaxy.size);
+  ellipse(galaxy.locationX ,galaxy.locationY, galaxy.size, galaxy.size);
 
   translate(width/2,height/2);
 
