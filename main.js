@@ -1,3 +1,5 @@
+//Credit
+// idea from https://editor.p5js.org/ag3439/sketches/Skgh1ZQtQ
 // idea from https://gist.github.com/bifo90/da5a437500f967162eb5e78df8d63859
 var Planet0 = [];
 var Planet1 = [];
