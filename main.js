@@ -32,10 +32,10 @@ function setup(){
   if (song.isPlaying()) {
     // .isPlaying() returns a boolean
     song.stop();
-    background(255, 0, 0);
+    //background(255, 0, 0);
   } else {
     song.play();
-    background(0, 255, 0);
+    //background(0, 255, 0);
     song.loop();
   }
 }
