@@ -9,6 +9,7 @@ let song;
 //setup function
 function setup(){
   createCanvas(windowWidth, windowHeight);
+  //Created by Jimmy Lu
   song = loadSound('assets/background.mp3');
   background(50);
   angleMode(DEGREES);
